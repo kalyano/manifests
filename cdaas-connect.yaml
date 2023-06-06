@@ -1,0 +1,23 @@
+version: v1
+kind: kubernetes
+application: kals-app
+
+targets:
+  support-test:
+    account: support-test
+    namespace: kal-deployments
+    strategy: myCanary
+
+manifests:
+  - path: manifests/my-application-manifests
+
+strategies:
+  myCanary:
+    canary:
+      steps:
+        - setWeight:
+            weight: 50
+        - pause:
+            untilApproved: true
+        - setWeight:
+            weight: 100
